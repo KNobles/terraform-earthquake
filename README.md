@@ -1,0 +1,2 @@
+# terraform-earthquake
+Terraform practice
