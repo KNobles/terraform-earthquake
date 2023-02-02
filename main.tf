@@ -106,29 +106,38 @@ resource "azurerm_postgresql_database" "kn-psql-db" {
   collation           = "English_United States.1252"
 }
 
-# DOCKER
-provider "docker" {
-  host = "unix:///var/run/docker.sock"
+
+resource "azurerm_container_registry" "kn-acr" {
+  name                = "knacr"
+  resource_group_name = azurerm_resource_group.krg.name
+  location            = azurerm_resource_group.krg.location
+  sku                 = "Premium"
+  admin_enabled       = false
 }
 
-# Pulls the image
-resource "docker_image" "server" {
-  name = "twitter_server:latest"
-}
+# # DOCKER
+# provider "docker" {
+#   host = "unix:///var/run/docker.sock"
+# }
 
-# Create a container
-resource "docker_container" "myserver" {
-  image = docker_image.server.image_id
-  name  = "myserver-container"
-}
+# # Pulls the image
+# resource "docker_image" "server" {
+#   name = "twitter_server:latest"
+# }
 
-# Pulls the image
-resource "docker_image" "client" {
-  name = "twitter_client:latest"
-}
+# # Create a container
+# resource "docker_container" "myserver" {
+#   image = docker_image.server.image_id
+#   name  = "myserver-container"
+# }
 
-# Create a container
-resource "docker_container" "myclient" {
-  image = docker_image.client.image_id
-  name  = "myclient-container"
-}
+# # Pulls the image
+# resource "docker_image" "client" {
+#   name = "twitter_client:latest"
+# }
+
+# # Create a container
+# resource "docker_container" "myclient" {
+#   image = docker_image.client.image_id
+#   name  = "myclient-container"
+# }
